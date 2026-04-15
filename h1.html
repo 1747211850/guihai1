@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
     <title>桂海百事26年CNY核心客户座谈会邀请函</title>
     <style>
         /* 全局重置与基础样式 */
@@ -12,12 +14,15 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "Microsoft YaHei", "SimHei", sans-serif;
+            -webkit-tap-highlight-color: transparent; /* 去除点击高亮 */
         }
 
-        body {
-            overflow: hidden;
+        html, body {
+            height: 100%;
+            overflow: hidden; /* 彻底禁用页面整体滚动 */
+            touch-action: none; /* 禁用浏览器默认触摸行为 */
+            -webkit-touch-callout: none; /* 禁用长按菜单 */
             background-color: #003399;
-            /* 百事主蓝 */
         }
 
         /* 音频控件隐藏（保留功能） */
@@ -25,39 +30,42 @@
             display: none;
         }
 
-        /* 页面容器 */
+        /* 页面容器 - 核心滑动容器 */
         .page-container {
             position: relative;
-            height: 80vh;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* 更丝滑的缓动曲线 */
-            transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
+            width: 100%;
+            height: 100%; /* 改用100%高度适配移动端 */
+            overflow: hidden;
+            touch-action: pan-y; /* 仅允许垂直滑动 */
         }
 
         /* 单页样式 - 占满屏幕 */
         .page {
-            position: relative;
-            width: 100vw;
-            height: 80vh;
+            position: absolute; /* 改为绝对定位，避免文档流影响 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             padding: 20px;
             background-color: transparent;
             color: #FFD700;
-            overflow-y: auto;
+            overflow: hidden; /* 禁用单页内部滚动 */
             -webkit-overflow-scrolling: touch;
             font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
             will-change: transform, opacity;
-            /* 添加初始动画状态 */
             opacity: 0;
             transform: translateY(20px) scale(0.98);
             transition: 
                 opacity 0.5s ease-out,
                 transform 0.5s ease-out;
+            z-index: 1; /* 层级控制 */
         }
 
         /* 激活的页面样式 */
         .page.active {
             opacity: 1;
             transform: translateY(0) scale(1);
+            z-index: 2;
         }
 
         /* 页面内通用样式 */
@@ -117,13 +125,15 @@
             font-size: 18px;
         }
 
-        /* 移动端适配容器 */
+        /* 移动端适配容器 - 改为绝对定位 */
         .invitation-card {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
             max-width: 430px;
-            height: 80vh;
             margin: 0 auto;
-            position: relative;
             overflow: hidden;
             background: url("/images/bg.png") no-repeat center center;
             background-size: cover;
@@ -160,6 +170,8 @@
             background-color: rgba(0, 0, 0, 0.15);
             padding: 25px 20px;
             border-radius: 8px;
+            overflow-y: auto; /* 仅蒙版内允许滚动（内容溢出时） */
+            -webkit-overflow-scrolling: touch;
         }
 
         .content-mask-jl {
@@ -171,6 +183,8 @@
             background-color: rgba(0, 0, 0, 0.15);
             padding: 25px 10px;
             border-radius: 8px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .content-mask-tips {
@@ -182,6 +196,8 @@
             background-color: rgba(0, 0, 0, 0.15);
             padding: 25px 20px;
             border-radius: 8px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* 红底金边标题 */
@@ -210,7 +226,6 @@
             flex-direction: column;
             align-items: flex-start;
             font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
-            /* 第二页初始状态：下方隐藏 */
             transform: translateY(100%);
             opacity: 0;
             transition: transform 0.8s ease-out, opacity 0.8s ease-out;
@@ -223,7 +238,7 @@
         }
 
         .invite-text p {
-            /* margin-bottom: 12px; */
+            margin-bottom: 12px;
         }
 
         /* 正文内容 - 活动流程 */
@@ -235,7 +250,6 @@
             flex-direction: column;
             align-items: flex-start;
             font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
-            /* 第三页初始状态：字体放大+透明 */
             transform: scale(1.5);
             opacity: 0;
             transition: transform 0.8s ease-out, opacity 0.8s ease-out;
@@ -261,23 +275,19 @@
             align-items: center;
             font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
             text-align: center;
-            /* 第四/五页初始状态：左侧隐藏 */
-            /* transform: translateX(-100%);
+        }
+
+        .invite-text-jp p {
+            transform: translateX(-100%);
             opacity: 0;
-            transition: transform 0.8s ease-out, opacity 0.8s ease-out; */
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+            margin-bottom: 0px;
         }
 
         /* 第四/五页激活时文字从左飞入 */
         .page.active .invite-text-jp p {
             transform: translateX(0);
             opacity: 1;
-        }
-
-        .invite-text-jp p {
-               transform: translateX(-100%);
-            opacity: 0;
-            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
-            margin-bottom: 0px;
         }
 
         /* 前两行无缩进，其余段落首行缩进 */
@@ -305,7 +315,6 @@
             line-height: 1.8;
             color: #f8e9c0;
             font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
-            /* 第七页文字初始状态：右侧隐藏+缓慢动画 */
             transform: translateX(100%);
             opacity: 0;
             transition: transform 1.2s ease-out, opacity 1.2s ease-out;
@@ -318,7 +327,7 @@
         }
 
         .tips-text p {
-            /* margin-bottom: 10px; */
+            margin-bottom: 10px;
         }
 
         /* 第六页地址区域样式 */
@@ -326,7 +335,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* 第六页初始状态：右侧隐藏 */
             transform: translateX(100%);
             opacity: 0;
             transition: transform 0.8s ease-out, opacity 0.8s ease-out;
@@ -343,7 +351,6 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            /* 初始状态：折叠隐藏 */
             transform: translateY(100%) rotateX(90deg);
             transform-origin: top center;
             opacity: 0;
@@ -362,7 +369,6 @@
             from {
                 -webkit-transform: rotate(0deg);
             }
-
             to {
                 transform: rotate(360deg);
                 -webkit-transform: rotate(360deg);
@@ -427,11 +433,32 @@
             opacity: 0.8;
             z-index: 998;
             animation: swipeTipBlink 2s ease-in-out infinite;
+            pointer-events: none; /* 避免遮挡滑动 */
         }
 
         @keyframes swipeTipBlink {
             0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
             50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* 适配小屏手机 */
+        @media screen and (max-height: 600px) {
+            .pepsi-logo {
+                top: 20px;
+                width: 60px;
+                height: 60px;
+            }
+            .content-mask, .content-mask-jl, .content-mask-tips {
+                top: 90px;
+                padding: 15px;
+            }
+            .invite-title span {
+                font-size: 18px;
+                padding: 0 20px;
+            }
+            .invite-text {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -445,18 +472,12 @@
     <div style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
         <img src="./images/music.png" id="audioPlayBtn" style="width: 30px;height: 30px;cursor: pointer;">
     </div>
-        <!-- 滑动提示 -->
+    <!-- 滑动提示 -->
     <div class="swipe-tip">↑↓ 滑动切换页面 ↑↓</div>
     <!-- 页面容器 -->
     <div class="page-container" id="pageContainer">
         <!-- 第1页：封面 -->
         <section class="page page-1 active">
-            <!-- <div style="display: flex;flex-direction: column;align-items: center;">
-                <img src="./images/time.png" style="width: 20px;height: 20px;margin-bottom: 10px;" alt="会议时间">
-                <p style="font-size: 16px;margin-bottom: 10px;">2026年4月22日 14:00-22:00</p>
-                <img src="./images/dingwei.png" style="width: 20px;height: 20px;margin-bottom: 10px;" alt="会议地点">
-                <p style="font-size: 16px;">南宁市龙光那莲豪华精选酒店3楼大宴会厅</p>
-            </div> -->
         </section>
 
         <!-- 第2页：诚挚邀请 -->
@@ -531,8 +552,6 @@
                             style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
                             <p style="font-size: 14px;font-weight: bold;">特等奖</p>
                             <p style="font-size: 18px;font-weight: bold;">价值6800元的神秘大奖</p>
-                            <!-- <p style="text-decoration: underline;font-weight: bold;">
-                                搭载超强芯片，影像能力卓越，屏幕显示惊艳，续航持久，尽享智慧便捷体验。</p> -->
                         </div>
                         <img src="./images/dj.png"
                             style="width: 70px;height: 70px;border: #002288 solid 2px;border-radius: 10px;">
@@ -672,9 +691,8 @@
                     <span>会议地址</span>
                 </div>
                 <div style="display: flex;justify-content: center;width: 100%;">
- <img src="./images/map.png" style="width: 70vw;height: 70vw;" alt="会议地址地图">
+                    <img src="./images/map.png" style="width: 70vw;height: auto;" alt="会议地址地图">
                 </div>
-                   
                 <div class="address-content">
                     <img src="./images/time.png" style="width: 30px;height: 30px;margin-top: 10px;margin-bottom: 10px;"
                         alt="会议时间">
@@ -700,9 +718,9 @@
                 </div>
                 <div class="tips-text">
                     <p style="text-indent: 2em;">1、<span class="highlight">会前签到</span>领取伴手礼及服装，一户一份，严禁代领，统一着装参会；<span
-                            class="highlight">会议当天14:40伴手礼及服装停止发放</span>，各部门提醒合作伙伴按时参会，<span
+                            class="highlight">会议当天14:30伴手礼及服装停止发放</span>，各部门提醒合作伙伴按时参会，<span
                             class="highlight">请勿迟到</span>。</p>
-                    <p style="text-indent: 2em;">2、海南区域客户航班如下：（11月26日上午有百事人员在机场接机，届时<span
+                    <p style="text-indent: 2em;">2、海南区域客户航班如下：（4月22日上午有百事人员在机场接机，届时<span
                             class="highlight">统一乘坐大巴车前往酒店会场</span>）</p>
                     <div class="flight-container">
                         <div
@@ -759,7 +777,6 @@
                                     <img src="./images/jp3.png" style="width: 100%;height: 50%;" alt="">
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <p>3、所有机票（行程单）、车票等报销凭证请于<span class="highlight">4月30日前</span>拍照发给所长，<span
@@ -784,130 +801,94 @@
         let currentPageIndex = 0; // 当前页码
         const pageCount = pages.length; // 总页数
         let startY = 0; // 滑动起始Y坐标
-        let endY = 0; // 滑动结束Y坐标
-        const slideThreshold = 50; // 滑动触发阈值（px）
-        let isAudioPlaying = false; // 音频播放状态标识
-        let isAnimating = false; // 动画状态锁，防止快速滑动
+        let isScrolling = false; // 防抖标记
 
-        // 初始化页面高度（确保单页占满屏幕）
-        function initPageHeight() {
-            const screenHeight = window.innerHeight;
-            pages.forEach(page => {
-                page.style.height = `${screenHeight}px`;
-            });
-        }
-
-        // 移除所有页面的动画类
-        function removeAllAnimationClasses() {
-            pages.forEach(page => {
-                page.classList.remove('page-transition-up', 'page-transition-down', 'active');
-            });
-        }
-
-        // 切换页面
-        function switchPage(targetIndex) {
-            // 边界判断和动画锁
-            if (targetIndex < 0 || targetIndex >= pageCount || isAnimating) return;
-            
-            isAnimating = true;
-            const direction = targetIndex > currentPageIndex ? 'up' : 'down';
-            
-            // 计算偏移量
-            const translateY = -targetIndex * 100;
-            pageContainer.style.transform = `translateY(${translateY}vh)`;
-            
-            // 移除所有动画类
-            removeAllAnimationClasses();
-            
-            // 为目标页面添加对应方向的动画
-            pages[targetIndex].classList.add(`page-transition-${direction}`, 'active');
-            
-            // 更新当前页码
-            currentPageIndex = targetIndex;
-            
-            // 解锁动画状态
-            setTimeout(() => {
-                isAnimating = false;
-            }, 600); // 与动画时长保持一致
-        }
-
-        const audioPlayBtn = document.getElementById('audioPlayBtn');
-        const audio = document.getElementById('bg-audio');
-
-        audioPlayBtn.addEventListener('click', toggleAudio);
-        audioPlayBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // 阻止触摸默认行为（如双击放大）
-            toggleAudio();
+        // 初始化页面位置
+        pages.forEach((page, index) => {
+            page.style.transform = `translateY(${index * 100}%)`;
         });
-        
-        // 音乐播放/暂停切换函数
-        function toggleAudio() {
-            if (audio.paused) {
-                audio.muted = false; // 取消静音
-                audio.play()
-                    .then(() => {
-                        isAudioPlaying = true;
-                        audioPlayBtn.classList.add('rotate'); // 播放时添加旋转
-                    })
-                    .catch(err => {
-                        console.log('播放失败，请再次点击:', err);
-                        isAudioPlaying = false;
-                        audioPlayBtn.classList.remove('rotate');
-                    });
-            } else {
-                // 暂停逻辑
-                audio.pause();
-                isAudioPlaying = false;
-                audioPlayBtn.classList.remove('rotate'); // 暂停时移除旋转
-            }
-        }
-        
-        audio.addEventListener('play', () => {
-            isAudioPlaying = true;
-            audioPlayBtn.classList.add('rotate');
-        });
+        pages[0].classList.add('active');
 
-        audio.addEventListener('pause', () => {
-            isAudioPlaying = false;
-            audioPlayBtn.classList.remove('rotate');
-        });
-
-        // 监听触摸开始
-        document.addEventListener('touchstart', (e) => {
-            if (isAnimating) return; // 动画中忽略触摸
+        // 触摸事件处理
+        pageContainer.addEventListener('touchstart', (e) => {
+            if (isScrolling) return; // 防抖：正在滑动时忽略新触摸
             startY = e.touches[0].clientY;
-        }, false);
+        }, { passive: true });
 
-        // 监听触摸结束
-        document.addEventListener('touchend', (e) => {
-            if (isAnimating) return; // 动画中忽略触摸
-            endY = e.changedTouches[0].clientY;
-            const diffY = startY - endY; // 向上滑为正，向下滑为负
+        pageContainer.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // 阻止默认滚动行为（关键）
+        }, { passive: false });
 
-            // 向上滑动（下一页）
-            if (diffY > slideThreshold) {
-                switchPage(currentPageIndex + 1);
+        pageContainer.addEventListener('touchend', (e) => {
+            if (isScrolling) return;
+            const endY = e.changedTouches[0].clientY;
+            const deltaY = startY - endY; // 滑动差值：向上滑为正，向下滑为负
+
+            // 判定滑动阈值（避免误触）
+            if (Math.abs(deltaY) < 30) return;
+
+            isScrolling = true; // 标记正在滑动
+
+            // 向上滑动：下一页
+            if (deltaY > 0 && currentPageIndex < pageCount - 1) {
+                currentPageIndex++;
+                pages.forEach((page, index) => {
+                    page.style.transform = `translateY(${-(currentPageIndex - index) * 100}%)`;
+                    page.classList.remove('active');
+                });
+                pages[currentPageIndex].classList.add('active');
+            } 
+            // 向下滑动：上一页
+            else if (deltaY < 0 && currentPageIndex > 0) {
+                currentPageIndex--;
+                pages.forEach((page, index) => {
+                    page.style.transform = `translateY(${-(currentPageIndex - index) * 100}%)`;
+                    page.classList.remove('active');
+                });
+                pages[currentPageIndex].classList.add('active');
             }
-            // 向下滑动（上一页）
-            else if (diffY < -slideThreshold) {
-                switchPage(currentPageIndex - 1);
-            }
-        }, false);
 
-        // 窗口大小变化时重新初始化
-        window.addEventListener('resize', initPageHeight);
+            // 防抖释放（动画结束后）
+            setTimeout(() => {
+                isScrolling = false;
+            }, 600);
+        }, { passive: true });
 
-        // 音频自动播放兼容
-        document.addEventListener('click', () => {
-            if (!isAudioPlaying) {
+        // 音乐播放控制（兼容微信）
+        const audio = document.getElementById('bg-audio');
+        const audioBtn = document.getElementById('audioPlayBtn');
+        let isAudioPlay = false;
+
+        // 微信浏览器自动播放兼容
+        document.addEventListener('WeixinJSBridgeReady', () => {
+            audio.muted = false;
+            audio.play().catch(() => {
+                // 仍无法播放则等待用户交互
+                audioBtn.addEventListener('click', playAudio, { once: true });
+            });
+        });
+
+        // 点击播放/暂停
+        audioBtn.addEventListener('click', playAudio);
+
+        function playAudio() {
+            if (isAudioPlay) {
+                audio.pause();
+                audioBtn.classList.remove('rotate');
+            } else {
                 audio.muted = false;
+                audio.play();
+                audioBtn.classList.add('rotate');
             }
-        }, { once: true });
+            isAudioPlay = !isAudioPlay;
+        }
 
-        // 初始化
-        initPageHeight();
-        switchPage(0);
+        // 适配窗口大小变化
+        window.addEventListener('resize', () => {
+            pages.forEach((page, index) => {
+                page.style.transform = `translateY(${-(currentPageIndex - index) * 100}%)`;
+            });
+        });
     </script>
 </body>
-
 </html>
