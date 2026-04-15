@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>桂海百事26年CNY核心客户座谈会邀请函</title>
+    <style>
+        /* 全局重置与基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "SimHei", sans-serif;
+        }
+
+        body {
+            overflow: hidden;
+            background-color: #003399;
+            /* 百事主蓝 */
+        }
+
+        /* 音频控件隐藏（保留功能） */
+        audio {
+            display: none;
+        }
+
+        /* 页面容器 */
+        .page-container {
+            position: relative;
+            height: 80vh;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* 更丝滑的缓动曲线 */
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+        }
+
+        /* 单页样式 - 占满屏幕 */
+        .page {
+            position: relative;
+            width: 100vw;
+            height: 80vh;
+            padding: 20px;
+            background-color: transparent;
+            color: #FFD700;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
+            will-change: transform, opacity;
+            /* 添加初始动画状态 */
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            transition: 
+                opacity 0.5s ease-out,
+                transform 0.5s ease-out;
+        }
+
+        /* 激活的页面样式 */
+        .page.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* 页面内通用样式 */
+        .page-title {
+            text-align: center;
+            font-size: 24px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .page-content {
+            width: 90%;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .page-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .highlight {
+            color: #d2dfe1;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* 第一页封面样式 */
+        .page-1 {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 180px;
+            background: url("/images/bg1.png") no-repeat center center;
+            background-size: cover;
+        }
+
+        .page-1 .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .page-1 .main-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .page-1 .info {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+        }
+
+        /* 移动端适配容器 */
+        .invitation-card {
+            width: 100%;
+            max-width: 430px;
+            height: 80vh;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            background: url("/images/bg.png") no-repeat center center;
+            background-size: cover;
+        }
+
+        /* 百事Logo */
+        .pepsi-logo {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .pepsi-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* 蒙版文字区域 */
+        .content-mask {
+            position: absolute;
+            top: 125px;
+            left: 15px;
+            right: 15px;
+            bottom: 50px;
+            background-color: rgba(0, 0, 0, 0.15);
+            padding: 25px 20px;
+            border-radius: 8px;
+        }
+
+        .content-mask-jl {
+            position: absolute;
+            top: 125px;
+            left: 15px;
+            right: 15px;
+            bottom: 50px;
+            background-color: rgba(0, 0, 0, 0.15);
+            padding: 25px 10px;
+            border-radius: 8px;
+        }
+
+        .content-mask-tips {
+            position: absolute;
+            top: 125px;
+            left: 15px;
+            right: 15px;
+            bottom: 50px;
+            background-color: rgba(0, 0, 0, 0.15);
+            padding: 25px 20px;
+            border-radius: 8px;
+        }
+
+        /* 红底金边标题 */
+        .invite-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .invite-title span {
+            display: inline-block;
+            background-color: #d10000;
+            color: #fff;
+            border: 2px solid #ffd700;
+            border-radius: 25px;
+            padding: 0 35px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* 正文内容 */
+        .invite-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #f8e9c0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
+            /* 第二页初始状态：下方隐藏 */
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+        }
+
+        /* 第二页激活时文字从下飞入 */
+        .page.active .invite-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .invite-text p {
+            /* margin-bottom: 12px; */
+        }
+
+        /* 正文内容 - 活动流程 */
+        .invite-text-lc {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #f8e9c0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
+            /* 第三页初始状态：字体放大+透明 */
+            transform: scale(1.5);
+            opacity: 0;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+        }
+
+        /* 第三页激活时字体恢复正常 */
+        .page.active .invite-text-lc {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .invite-text-lc p {
+            margin-bottom: 12px;
+        }
+
+        /* 奖品和精彩演绎文字样式 */
+        .invite-text-jp {
+            font-size: 12px;
+            line-height: 1.7;
+            color: #f8e9c0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
+            text-align: center;
+            /* 第四/五页初始状态：左侧隐藏 */
+            /* transform: translateX(-100%);
+            opacity: 0;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out; */
+        }
+
+        /* 第四/五页激活时文字从左飞入 */
+        .page.active .invite-text-jp p {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .invite-text-jp p {
+               transform: translateX(-100%);
+            opacity: 0;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+            margin-bottom: 0px;
+        }
+
+        /* 前两行无缩进，其余段落首行缩进 */
+        .invite-text p:first-child,
+        .invite-text p:nth-child(1) {
+            text-align: center;
+            text-indent: 0;
+        }
+
+        .invite-text p:not(:first-child):not(:nth-child(1)) {
+            text-indent: 2em;
+        }
+
+        /* 右对齐署名 */
+        .sign-off {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #f8e9c0;
+        }
+
+        /* 小贴士文本样式适配 */
+        .tips-text {
+            font-size: 10px;
+            line-height: 1.8;
+            color: #f8e9c0;
+            font-family: "FangZhengKaiTi", "STKaiti", "SimHei", sans-serif;
+            /* 第七页文字初始状态：右侧隐藏+缓慢动画 */
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 1.2s ease-out, opacity 1.2s ease-out;
+        }
+
+        /* 第七页激活时文字从右缓慢飞入 */
+        .page.active .tips-text {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .tips-text p {
+            /* margin-bottom: 10px; */
+        }
+
+        /* 第六页地址区域样式 */
+        .address-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* 第六页初始状态：右侧隐藏 */
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+        }
+
+        /* 第六页激活时地址从右飞入 */
+        .page.active .address-content {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* 航班信息折叠上翻动画 */
+        .flight-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            /* 初始状态：折叠隐藏 */
+            transform: translateY(100%) rotateX(90deg);
+            transform-origin: top center;
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* 激活时折叠上翻 */
+        .page.active .flight-container {
+            transform: translateY(0) rotateX(0);
+            opacity: 1;
+        }
+
+        /* 音乐按钮旋转动画 */
+        @keyframes rotate {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        /* 旋转类 */
+        .rotate {
+            animation: rotate 3s linear infinite;
+            -webkit-animation: rotate 3s linear infinite;
+            animation-fill-mode: forwards;
+            -webkit-animation-fill-mode: forwards;
+        }
+
+        #audioPlayBtn {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            z-index: 9999 !important;
+        }
+
+        /* 滑动时的页面过渡效果增强 */
+        .page-transition-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .page-transition-down {
+            animation: slideDown 0.6s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .swipe-tip {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FFD700;
+            font-size: 14px;
+            opacity: 0.8;
+            z-index: 998;
+            animation: swipeTipBlink 2s ease-in-out infinite;
+        }
+
+        @keyframes swipeTipBlink {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 音频播放（自动播放+循环，静音适配浏览器策略） -->
+    <audio id="bg-audio" loop muted>
+        <source src="your-audio-file.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放
+    </audio>
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+        <img src="./images/music.png" id="audioPlayBtn" style="width: 30px;height: 30px;cursor: pointer;">
+    </div>
+        <!-- 滑动提示 -->
+    <div class="swipe-tip">↑↓ 滑动切换页面 ↑↓</div>
+    <!-- 页面容器 -->
+    <div class="page-container" id="pageContainer">
+        <!-- 第1页：封面 -->
+        <section class="page page-1 active">
+            <!-- <div style="display: flex;flex-direction: column;align-items: center;">
+                <img src="./images/time.png" style="width: 20px;height: 20px;margin-bottom: 10px;" alt="会议时间">
+                <p style="font-size: 16px;margin-bottom: 10px;">2026年4月22日 14:00-22:00</p>
+                <img src="./images/dingwei.png" style="width: 20px;height: 20px;margin-bottom: 10px;" alt="会议地点">
+                <p style="font-size: 16px;">南宁市龙光那莲豪华精选酒店3楼大宴会厅</p>
+            </div> -->
+        </section>
+
+        <!-- 第2页：诚挚邀请 -->
+        <section class="page invitation-card">
+            <!-- 百事Logo（可替换为本地图片） -->
+            <div class="pepsi-logo">
+                <img src="./images/logo.png" alt="百事可乐logo">
+            </div>
+            <!-- 蒙版文字区域 -->
+            <div class="content-mask">
+                <div class="invite-title">
+                    <span>诚挚邀请</span>
+                </div>
+                <div class="invite-text">
+                    <p>尊敬的合作伙伴:</p>
+                    <p>您好!</p>
+                    <p>盛夏炽焰，旺季正燃！2026年度旺季旺销战役已全面打响，为感恩您与百事并肩同行、共拓市场的坚定信任与深耕付出，诚邀您拨冗莅临百事桂海行销公司旺季旺销核心客户座谈会与晚宴，与行业精英共探市场脉搏，共享旺季实战策略，共掘增长新机遇，携手再创销售巅峰！</p>
+                    <p>本次大会将聚焦渠道变化影响与旺季策略资源投入，精准把握市场风向，现场为核心合作伙伴同步渠道激励政策，并设置“最佳合作奖”“品项拓展奖”“成长奖”等荣誉表彰，更有现场签约专属福利、现金抽奖及百事限定缴款奖等多重好礼，诚邀您共襄盛会！丰厚好礼相送，让您收获满满！</p>
+                    <p>旺季战鼓催征，共赢未来可期！期待与您共聚一堂，以智慧点燃激情，以合作铸就辉煌！</p>
+                    <p>期盼莅临，顺祝商祺！</p>
+                </div>
+                <div class="sign-off">
+                    百事饮品事业桂海行销公司
+                </div>
+            </div>
+        </section>
+
+        <!-- 第3页：活动流程 -->
+        <section class="page invitation-card">
+            <!-- 百事Logo（可替换为本地图片） -->
+            <div class="pepsi-logo">
+                <img src="./images/logo.png" alt="百事可乐logo">
+            </div>
+            <!-- 蒙版文字区域 -->
+            <div class="content-mask">
+                <div class="invite-title">
+                    <span>活动流程</span>
+                </div>
+                <div class="invite-text-lc">
+                    <p>14:20-14:30 | 入场签到</p>
+                    <p>14:30-14:35 | 欢迎致辞&议程说明</p>
+                    <p>14:35-14:50 | 前期经营问题点说明解析</p>
+                    <p>14:50-15:10 | 旺季旺销政策宣讲</p>
+                    <p>15:10-15:30 | 宏观环境分析-渠道发展前景</p>
+                    <p>15:30-15:40 | 茶歇</p>
+                    <p>15:40-15:55 | 经销商税务提醒及注意事项</p>
+                    <p>15:55-16:15 | 上线城市，下线城市生意机会点</p>
+                    <p>16:15-16:40 | 管家婆系统上线共识会宣导</p>
+                    <p>16:40-17:00 | 总经理指导</p>
+                    <p>17:00-17:10 | 合照</p>
+                    <p>17:10-19:00 | 转场</p>
+                    <p>19:00-22:00 | 感恩晚宴</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第4页：奖品设置 -->
+        <section class="page invitation-card">
+            <!-- 百事Logo（可替换为本地图片） -->
+            <div class="pepsi-logo">
+                <img src="./images/logo.png" alt="百事可乐logo">
+            </div>
+            <!-- 蒙版文字区域 -->
+            <div class="content-mask-jl">
+                <div class="invite-title">
+                    <span>参会赢大奖</span>
+                </div>
+                <div class="invite-text-jp">
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;padding-bottom: 5px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">特等奖</p>
+                            <p style="font-size: 18px;font-weight: bold;">价值6800元的神秘大奖</p>
+                            <!-- <p style="text-decoration: underline;font-weight: bold;">
+                                搭载超强芯片，影像能力卓越，屏幕显示惊艳，续航持久，尽享智慧便捷体验。</p> -->
+                        </div>
+                        <img src="./images/dj.png"
+                            style="width: 70px;height: 70px;border: #002288 solid 2px;border-radius: 10px;">
+                    </div>
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;margin-top: 5px;padding-bottom: 5px;">
+                        <img src="./images/saodiji.png"
+                            style="width: 70px;height: 70px;border: #002288 solid 2px;border-radius: 10px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">一等奖</p>
+                            <p>追觅洗地机追梦家T60UItra</p>
+                            <p style="text-decoration: underline;font-weight: bold;">
+                                超薄机身 双机械臂 25KPA大吸力 洗拖吸拖一体机自动清洗家用拖扫地机</p>
+                        </div>
+                    </div>
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;margin-top: 5px;padding-bottom: 5px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">二等奖</p>
+                            <p>海信(Hisense) 93升冰吧</p>
+                            <p style="text-decoration: underline;font-weight: bold;">
+                                一级能效鲜储分区宽幅调温</p>
+                        </div>
+                        <img src="./images/shengbingba.png"
+                            style="width: 70px;height: 70px;border: #002288 solid 2px;border-radius: 10px;">
+                    </div>
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;margin-top: 5px;padding-bottom: 5px;">
+                        <img src="./images/fengshan.png"
+                            style="width: 70px;height: 70px;border: #002288 solid 2px;border-radius: 10px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">三等奖</p>
+                            <p>科沃[升级大容量+双驱] 挂腰风扇</p>
+                            <p style="text-decoration: underline;font-weight: bold;">
+                                199档无级调节随时拥有抗压更高温的能力</p>
+                        </div>
+                    </div>
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;margin-top: 5px;padding-bottom: 5px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">获奖客户/分享礼</p>
+                            <p>JBL开放式无线蓝牙耳机</p>
+                            <p style="text-decoration: underline;font-weight: bold;">
+                                开放式声音投送技术 定向传输好声音</p>
+                        </div>
+                        <img src="./images/erji.png"
+                            style="width: 70px;height: 70px;border: #002288 solid 2px;border-radius: 10px;">
+                    </div>
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;margin-top: 5px;">
+                        <img src="./images/jl.png"
+                            style="width: 70px;height: 70px;border: #002288 solid 2px;border-radius: 10px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">大额缴款奖励</p>
+                            <p style="text-decoration: underline;font-weight: bold;">
+                                异质赠品无限量放送，坎级叠加，多缴多得</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第5页：精彩演绎 -->
+        <section class="page invitation-card">
+            <!-- 百事Logo（可替换为本地图片） -->
+            <div class="pepsi-logo">
+                <img src="./images/logo.png" alt="百事可乐logo">
+            </div>
+            <!-- 蒙版文字区域 -->
+            <div class="content-mask">
+                <div class="invite-title">
+                    <span>精彩演绎</span>
+                </div>
+                <div class="invite-text-jp">
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;padding-bottom: 10px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">女团舞</p>
+                            <p style="text-align: left;text-indent: 2em;">
+                                元气满格，魅力绽放！利落卡点的飒爽舞姿，甜酷兼具的舞台张力，每一个眼神都闪耀夺目，这场活力盛宴，让你瞬间倾心、心动不止！</p>
+                        </div>
+                        <img src="./images/nvtuan.png"
+                            style="width: 90px;height: 90px;border: #002288 solid 2px;border-radius: 10px;">
+                    </div>
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;margin-top: 5px;padding-bottom: 10px;">
+                        <img src="./images/yuedui.png"
+                            style="width: 90px;height: 90px;border: #002288 solid 2px;border-radius: 10px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">乐队</p>
+                            <p style="text-align: left;text-indent: 2em;">
+                                鼓点激荡燃全场，弦乐铿锵赴热忱！流行旋律与摇滚节奏碰撞，用澎湃音律点燃热血情绪，准备好跟着节拍欢呼律动，解锁晚宴高光时刻！</p>
+                        </div>
+                    </div>
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;margin-top: 5px;padding-bottom: 10px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">旗袍舞</p>
+                            <p style="text-align: left;text-indent: 2em;">
+                                绫罗曳地承风雅，莲步轻扬醉芳华！以温婉韵律勾勒东方韵味，一颦一蹙尽显民国风情，每一次转身都藏着婉约诗意，这场雅致盛宴，邀你共赏绝代风华。</p>
+                        </div>
+                        <img src="./images/qipao.png"
+                            style="width: 90px;height: 90px;border: #002288 solid 2px;border-radius: 10px;">
+                    </div>
+                    <div
+                        style="width: 100%;display: flex;align-items: center;justify-content: space-between;border-bottom: 1px #ffffff solid;margin-top: 5px;padding-bottom: 10px;">
+                        <img src="./images/gogo.png"
+                            style="width: 90px;height: 90px;border: #002288 solid 2px;border-radius: 10px;">
+                        <div
+                            style="width: 70%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <p style="font-size: 14px;font-weight: bold;">精彩互动</p>
+                            <p style="text-align: left;">
+                               派对狂欢，燃动全场！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第6页：会议地址 -->
+        <section class="page invitation-card">
+            <!-- 百事Logo（可替换为本地图片） -->
+            <div class="pepsi-logo">
+                <img src="./images/logo.png" alt="百事可乐logo">
+            </div>
+            <!-- 蒙版文字区域 -->
+            <div class="content-mask">
+                <div class="invite-title">
+                    <span>会议地址</span>
+                </div>
+                <div style="display: flex;justify-content: center;width: 100%;">
+ <img src="./images/map.png" style="width: 70vw;height: 70vw;" alt="会议地址地图">
+                </div>
+                   
+                <div class="address-content">
+                    <img src="./images/time.png" style="width: 30px;height: 30px;margin-top: 10px;margin-bottom: 10px;"
+                        alt="会议时间">
+                    <p style="font-size: 16px;">2026年4月22日 14:00-22:00</p>
+                    <img src="./images/dingwei.png"
+                        style="width: 30px;height: 30px;margin-top: 10px;margin-bottom: 10px;" alt="会议地点">
+                    <p style="font-size: 16px;">广西南宁市青秀区中柬路8号</p>
+                    <p style="font-size: 16px;">龙光那莲豪华精选酒店3楼大宴会厅</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第7页：小贴士（替换后的内容） -->
+        <section class="page invitation-card">
+            <!-- 百事Logo（可替换为本地图片） -->
+            <div class="pepsi-logo">
+                <img src="./images/logo.png" alt="百事可乐logo">
+            </div>
+            <!-- 蒙版文字区域 -->
+            <div class="content-mask-tips" style="padding: 25px 5px;">
+                <div class="invite-title" style="margin-bottom: 5px;">
+                    <span>小贴士</span>
+                </div>
+                <div class="tips-text">
+                    <p style="text-indent: 2em;">1、<span class="highlight">会前签到</span>领取伴手礼及服装，一户一份，严禁代领，统一着装参会；<span
+                            class="highlight">会议当天14:40伴手礼及服装停止发放</span>，各部门提醒合作伙伴按时参会，<span
+                            class="highlight">请勿迟到</span>。</p>
+                    <p style="text-indent: 2em;">2、海南区域客户航班如下：（11月26日上午有百事人员在机场接机，届时<span
+                            class="highlight">统一乘坐大巴车前往酒店会场</span>）</p>
+                    <div class="flight-container">
+                        <div
+                            style="width: 100%;height: 30px;display: flex;justify-content: center;align-items: center;background-color: #206fcc;">
+                            航班信息
+                        </div>
+                        <div style="display: flex;height: 80px;">
+                            <div
+                                style="width: 20%;height: 100%;border: #3b6595 1px solid;display: flex;flex-direction: column;justify-content: center;align-items: center;font-size: 10px;">
+                                <p style="margin-bottom: 0;">出发航班</p>
+                                <p style="margin-bottom: 0;">(4月22日)</p>
+                            </div>
+                            <div
+                                style="width: 40%;height: 100%;border: #3b6595 1px solid;display: flex;flex-direction: column;justify-content: center;align-items: center;font-size: 10px;">
+                                <p style="margin-bottom: 0;">海口—南宁 首都航空JD5529</p>
+                                <p style="margin-bottom: 0;">4月22日 8:50—10:00</p>
+                                <p style="margin-bottom: 0;text-align: center;">需7点前抵达海口机场南宁机场到酒店大巴统一接送</p>
+                            </div>
+                            <div
+                                style="width: 40%;height: 100%;border: #3b6595 1px solid;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                                <img src="./images/jp1.png" style="width: 100%;height: 50%;" alt="">
+                            </div>
+                        </div>
+
+                        <div style="display: flex;height: 160px;">
+                            <div
+                                style="width: 20%;height: 100%;border: #3b6595 1px solid;display: flex;flex-direction: column;justify-content: center;align-items: center;font-size: 10px;">
+                                <p style="margin-bottom: 0;">返程航班</p>
+                                <p style="margin-bottom: 0;">(4月23日)</p>
+                            </div>
+                            <div
+                                style="width: 40%;height: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center;font-size: 10px;">
+                                <div
+                                    style="width: 100%;height: 50%;border: #3b6595 1px solid;display: flex;flex-direction: column;justify-content: center;align-items: center;font-size: 10px;">
+                                    <p style="margin-bottom: 0;">南宁—三亚 海南航空HU7364</p>
+                                    <p style="margin-bottom: 0;">4月23日 22:00—23:15</p>
+                                    <p style="margin-bottom: 0;text-align: center;">无合适,晚上11点才有飞机,建议飞海口,再转回三亚</p>
+                                </div>
+                                <div
+                                    style="width: 100%;height: 50%;border: #3b6595 1px solid;display: flex;flex-direction: column;justify-content: center;align-items: center;font-size: 10px;">
+                                    <p style="margin-bottom: 0;">南宁—海口 北部湾航GX8861</p>
+                                    <p style="margin-bottom: 0;">4月23日 15:05—16:05</p>
+                                    <p style="margin-bottom: 0;text-align: center;">安排23日参观走访后直接大巴2点送到机场</p>
+                                </div>
+                            </div>
+                            <div
+                                style="width: 40%;height: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center;font-size: 10px;">
+                                <div
+                                    style="width: 100%;height: 50%;border: #3b6595 1px solid;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                                    <img src="./images/jp2.png" style="width: 100%;height: 50%;" alt="">
+                                </div>
+                                <div
+                                    style="width: 100%;height: 50%;border: #3b6595 1px solid;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                                    <img src="./images/jp3.png" style="width: 100%;height: 50%;" alt="">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <p>3、所有机票（行程单）、车票等报销凭证请于<span class="highlight">4月30日前</span>拍照发给所长，<span
+                            class="highlight">所长于5月2日前收集好</span>统一交给促规进行流程报销，<span class="highlight">逾期不予报销。</span></p>
+                    <p>4、报销标准：</p>
+                    <p>(1)飞机:<span class="highlight">经济舱，一户一人</span></p>
+                    <p>按照行程单<span class="highlight">实际金额报销机票+燃油费</span>(不含保险等其它增值服务费用);</p>
+                    <p>(2)公共交通:<span class="highlight">按发票报销</span>(不含出租车/网约车/顺风车等);</p>
+                    <p>(3)自驾:<span class="highlight">(过路费+油费)按0.8元/公里补贴</span>(按高德地图经销商仓库位置至会场<span
+                            class="highlight">最短距离核算</span>);<span class="highlight">停车费自费。</span></p>
+                    <p>(4)<span class="highlight">海南SOM由于无合适班机直飞南宁</span>海南SOM客户21日晚上安排在海口住一晚;<span
+                            class="highlight">单人200的标准</span></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 核心变量
+        const pageContainer = document.getElementById('pageContainer');
+        const pages = document.querySelectorAll('.page');
+        let currentPageIndex = 0; // 当前页码
+        const pageCount = pages.length; // 总页数
+        let startY = 0; // 滑动起始Y坐标
+        let endY = 0; // 滑动结束Y坐标
+        const slideThreshold = 50; // 滑动触发阈值（px）
+        let isAudioPlaying = false; // 音频播放状态标识
+        let isAnimating = false; // 动画状态锁，防止快速滑动
+
+        // 初始化页面高度（确保单页占满屏幕）
+        function initPageHeight() {
+            const screenHeight = window.innerHeight;
+            pages.forEach(page => {
+                page.style.height = `${screenHeight}px`;
+            });
+        }
+
+        // 移除所有页面的动画类
+        function removeAllAnimationClasses() {
+            pages.forEach(page => {
+                page.classList.remove('page-transition-up', 'page-transition-down', 'active');
+            });
+        }
+
+        // 切换页面
+        function switchPage(targetIndex) {
+            // 边界判断和动画锁
+            if (targetIndex < 0 || targetIndex >= pageCount || isAnimating) return;
+            
+            isAnimating = true;
+            const direction = targetIndex > currentPageIndex ? 'up' : 'down';
+            
+            // 计算偏移量
+            const translateY = -targetIndex * 100;
+            pageContainer.style.transform = `translateY(${translateY}vh)`;
+            
+            // 移除所有动画类
+            removeAllAnimationClasses();
+            
+            // 为目标页面添加对应方向的动画
+            pages[targetIndex].classList.add(`page-transition-${direction}`, 'active');
+            
+            // 更新当前页码
+            currentPageIndex = targetIndex;
+            
+            // 解锁动画状态
+            setTimeout(() => {
+                isAnimating = false;
+            }, 600); // 与动画时长保持一致
+        }
+
+        const audioPlayBtn = document.getElementById('audioPlayBtn');
+        const audio = document.getElementById('bg-audio');
+
+        audioPlayBtn.addEventListener('click', toggleAudio);
+        audioPlayBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // 阻止触摸默认行为（如双击放大）
+            toggleAudio();
+        });
+        
+        // 音乐播放/暂停切换函数
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.muted = false; // 取消静音
+                audio.play()
+                    .then(() => {
+                        isAudioPlaying = true;
+                        audioPlayBtn.classList.add('rotate'); // 播放时添加旋转
+                    })
+                    .catch(err => {
+                        console.log('播放失败，请再次点击:', err);
+                        isAudioPlaying = false;
+                        audioPlayBtn.classList.remove('rotate');
+                    });
+            } else {
+                // 暂停逻辑
+                audio.pause();
+                isAudioPlaying = false;
+                audioPlayBtn.classList.remove('rotate'); // 暂停时移除旋转
+            }
+        }
+        
+        audio.addEventListener('play', () => {
+            isAudioPlaying = true;
+            audioPlayBtn.classList.add('rotate');
+        });
+
+        audio.addEventListener('pause', () => {
+            isAudioPlaying = false;
+            audioPlayBtn.classList.remove('rotate');
+        });
+
+        // 监听触摸开始
+        document.addEventListener('touchstart', (e) => {
+            if (isAnimating) return; // 动画中忽略触摸
+            startY = e.touches[0].clientY;
+        }, false);
+
+        // 监听触摸结束
+        document.addEventListener('touchend', (e) => {
+            if (isAnimating) return; // 动画中忽略触摸
+            endY = e.changedTouches[0].clientY;
+            const diffY = startY - endY; // 向上滑为正，向下滑为负
+
+            // 向上滑动（下一页）
+            if (diffY > slideThreshold) {
+                switchPage(currentPageIndex + 1);
+            }
+            // 向下滑动（上一页）
+            else if (diffY < -slideThreshold) {
+                switchPage(currentPageIndex - 1);
+            }
+        }, false);
+
+        // 窗口大小变化时重新初始化
+        window.addEventListener('resize', initPageHeight);
+
+        // 音频自动播放兼容
+        document.addEventListener('click', () => {
+            if (!isAudioPlaying) {
+                audio.muted = false;
+            }
+        }, { once: true });
+
+        // 初始化
+        initPageHeight();
+        switchPage(0);
+    </script>
+</body>
+
+</html>
